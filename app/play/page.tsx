@@ -20,6 +20,8 @@ export default function PlayPage() {
   const [userAnswer, setUserAnswer] = useState("");
   const [result, setResult] = useState<string | null>(null);
   const [mode, setMode] = useState<"sequential" | "random">("sequential");
+  const [correctCount, setCorrectCount] = useState(0);
+  const [wrongCount, setWrongCount] = useState(0);
 
   useEffect(() => {
     getCardsServer().then((data) => setCards(data || []));
@@ -34,8 +36,10 @@ export default function PlayPage() {
 
     if (correct) {
       setResult("Correct!");
+      setCorrectCount((c) => c + 1);
     } else {
       setResult(`Wrong! The correct answer is: ${correctAnswer}`);
+      setWrongCount((w) => w + 1);
     }
   };
 
@@ -109,7 +113,15 @@ export default function PlayPage() {
           </button>
         )}
       </div>
-      <button className="bg-gray-700 text-white px-4 py-1 rounded mt-4" onClick={() => window.location.href = '/flashcards'}>Back</button>
+      <div className="text-sm text-gray-400 text-center">
+        Correct: {correctCount} | Wrong: {wrongCount}
+      </div>
+      <button
+        className="bg-gray-700 text-white px-4 py-1 rounded mt-4"
+        onClick={() => (window.location.href = "/flashcards")}
+      >
+        Back
+      </button>
     </main>
   );
 }

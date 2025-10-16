@@ -174,13 +174,16 @@ export default function FlashcardPage() {
                   <button onClick={() => removeCard(card.id)}>Delete</button>
                 </div>
               </div>
-              
             ))}
-            
         </>
       )}
       <div className="flex justify-center">
-        <button className="bg-green-200 text-black px-6 py-1 rounded mt-4" onClick={() => window.location.href = '/play'}>Go play!</button>
+        <button
+          className="bg-green-200 text-black px-6 py-1 rounded mt-4"
+          onClick={() => (window.location.href = "/play")}
+        >
+          Go play!
+        </button>
       </div>
     </main>
   );
