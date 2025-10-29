@@ -24,12 +24,15 @@ function getServerClient() {
   );
 }
 
-export async function getCardsServer() {
+export async function getCardsServer(categoryId?: number) {
   const supabase = getServerClient();
-  const { data, error } = await supabase.from("cards").select("*");
+  let query = supabase.from("cards").select("*");
+  if (categoryId) query = query.eq("category_id", categoryId);
+  const { data, error } = await query;
   if (error) throw new Error(error.message);
   return data;
 }
+
 
 export async function checkAnswerServer(cardId: number, userAnswer: string) {
   const supabase = getServerClient();
@@ -61,4 +64,11 @@ export async function getNextCardServer(
     return randomIndex;
   }
   return (currentIndex + 1) % cards.length;
+}
+
+export async function getCategoriesServer() {
+  const supabase = getServerClient();
+  const { data, error } = await supabase.from("categories").select("*");
+  if (error) throw new Error(error.message);
+  return data;
 }

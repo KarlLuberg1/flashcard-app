@@ -49,7 +49,7 @@ export default function FlashcardPage() {
     };
 
     loadData();
-  }, []);
+  }, [supabase]);
 
   const addCategory = async (e: React.FormEvent) => {
     e.preventDefault();
