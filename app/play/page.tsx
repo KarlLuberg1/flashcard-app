@@ -5,6 +5,7 @@ import {
   getCardsServer,
   checkAnswerServer,
   getNextCardServer,
+  getCategoriesServer,
 } from "./serverside";
 
 interface Card {
@@ -22,10 +23,17 @@ export default function PlayPage() {
   const [mode, setMode] = useState<"sequential" | "random">("sequential");
   const [correctCount, setCorrectCount] = useState(0);
   const [wrongCount, setWrongCount] = useState(0);
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>(
+    []
+  );
+  const [selectedCategory, setSelectedCategory] = useState<number | undefined>(
+    undefined
+  );
 
   useEffect(() => {
-    getCardsServer().then((data) => setCards(data || []));
-  }, []);
+    getCategoriesServer().then((data) => setCategories(data || []));
+    getCardsServer(selectedCategory).then((data) => setCards(data || []));
+  }, [selectedCategory]);
 
   const handleCheck = async () => {
     const currentCard = cards[currentIndex];
@@ -58,6 +66,23 @@ export default function PlayPage() {
   return (
     <main className="p-6 max-w-md mx-auto text-center space-y-4">
       <h1 className="text-2xl font-bold">Play Mode</h1>
+
+      <select
+        value={selectedCategory ?? ""}
+        onChange={(e) =>
+          setSelectedCategory(
+            e.target.value ? Number(e.target.value) : undefined
+          )
+        }
+        className="border rounded p-2"
+      >
+        <option value="">All Categories</option>
+        {categories.map((category) => (
+          <option key={category.id} value={category.id}>
+            {category.name}
+          </option>
+        ))}
+      </select>
 
       {/* modevisuals */}
       <div className="flex justify-center gap-2">
